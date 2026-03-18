@@ -1,3 +1,5 @@
+const eventRoutes = require("./routes/eventRoutes");
+
 const express = require("express");
 const cors = require("cors");
 
@@ -5,6 +7,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/events", eventRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Event Booking System Backend API is running" });
