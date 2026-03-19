@@ -19,5 +19,8 @@ app.get("/api/test", (req, res) => {
     message: "Test API is working"
   });
 });
+const bookingRoutes = require("./routes/bookingRoutes");
+// ...
+app.use("/api/bookings", bookingRoutes); 
 
 module.exports = app;
