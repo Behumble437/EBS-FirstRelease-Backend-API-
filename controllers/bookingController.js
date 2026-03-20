@@ -62,6 +62,15 @@ const updateBooking = async (req, res) => {
     if (req.body.ticketsBooked) booking.ticketsBooked = req.body.ticketsBooked;
     if (req.body.status) booking.status = req.body.status;
     if (req.body.paymentStatus) booking.paymentStatus = req.body.paymentStatus;
+    if(booking.user.toString()!=req.user.userId){
+
+      return res.status(403).json({
+      
+      message:"Not authorized"
+      
+      });
+      
+      }
 
     const updatedBooking = await booking.save();
     res.json({ message: "Booking updated", booking: updatedBooking });

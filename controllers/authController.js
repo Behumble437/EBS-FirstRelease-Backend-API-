@@ -23,7 +23,7 @@ function getMissingFields(body, fields) {
 
 async function register(req, res) {
   try {
-    const { name, email, password } = req.body || {};
+    const { name, email, password, role } = req.body || {};
 
     const missing = getMissingFields({ name, email, password }, [
       "name",
@@ -47,7 +47,7 @@ async function register(req, res) {
       name: String(name).trim(),
       email: normalizedEmail,
       password: String(password),
-      role: "user",
+      role: role === "admin" ? "admin" : "user",
     });
 
     return res.status(201).json({

@@ -1,3 +1,4 @@
+const authMiddleware = require("../middleware/authMiddleware");
 const express = require("express");
 const router = express.Router();
 const {
@@ -8,10 +9,24 @@ const {
   deleteBooking
 } = require("../controllers/bookingController");
 
-router.post("/", createBooking);
-router.get("/", getAllBookings);
-router.get("/:id", getBookingById);
-router.put("/:id", updateBooking);
-router.delete("/:id", deleteBooking);
+router.post("/",
+authMiddleware,
+createBooking);
+
+router.get("/",
+authMiddleware,
+getAllBookings);
+
+router.get("/:id",
+authMiddleware,
+getBookingById);
+
+router.put("/:id",
+authMiddleware,
+updateBooking);
+
+router.delete("/:id",
+authMiddleware,
+deleteBooking);
 
 module.exports = router;

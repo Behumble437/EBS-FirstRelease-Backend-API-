@@ -30,7 +30,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, requireRole("admin"),
+async (req,res)=>{
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
@@ -48,7 +49,8 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, requireRole("admin"),
+async (req,res)=>{
   try {
     const deletedEvent = await Event.findByIdAndDelete(req.params.id);
 

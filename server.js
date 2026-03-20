@@ -1,3 +1,9 @@
+require('dns').setDefaultResultOrder('ipv4first')
+
+require("dotenv").config()
+
+const express=require("express")
+
 const dotenv = require("dotenv");
 const app = require("./app");
 const connectDB = require("./config/db");
