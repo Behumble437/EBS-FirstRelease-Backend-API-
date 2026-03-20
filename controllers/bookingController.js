@@ -1,7 +1,6 @@
 const Booking = require("../models/Booking");
 const Event = require("../models/Event");
 
-// create a booking
 const createBooking = async (req, res) => {
   const { eventId, ticketsBooked, pricePerTicket } = req.body;
 
@@ -29,20 +28,18 @@ const createBooking = async (req, res) => {
   }
 };
 
-// get all bookings
 const getAllBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find().populate("event", "title date location");
+    const bookings = await Booking.find().populate("event", "name date location");
     res.json(bookings);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// get one booking by id
 const getBookingById = async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id).populate("event", "title date location");
+    const booking = await Booking.findById(req.params.id).populate("event", "name date location");
 
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
@@ -54,7 +51,6 @@ const getBookingById = async (req, res) => {
   }
 };
 
-// update booking status
 const updateBooking = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
@@ -74,7 +70,6 @@ const updateBooking = async (req, res) => {
   }
 };
 
-// delete a booking
 const deleteBooking = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);

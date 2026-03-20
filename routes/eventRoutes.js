@@ -1,18 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const Event = require("../models/Event");
+const authMiddleware = require("../middleware/authMiddleware");
+const { requireRole } = require("../middleware/roleMiddleware");
 
-// GET all events
 router.get("/", async (req, res) => {
   try {
-    const events = await Event.find();
-    res.json(events);
+    const events = await Event.find().sort({ date: 1 });
+    res.json({
+      message: "Events fetched",
+      events,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// GET one event by id
 router.get("/:id", async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
@@ -27,7 +30,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// PUT update event by id
 router.put("/:id", async (req, res) => {
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
@@ -46,7 +48,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE event by id
 router.delete("/:id", async (req, res) => {
   try {
     const deletedEvent = await Event.findByIdAndDelete(req.params.id);
@@ -61,12 +62,28 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// POST create event
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, requireRole("admin"), async (req, res) => {
   try {
-    const event = new Event(req.body);
-    const savedEvent = await event.save();
-    res.status(201).json(savedEvent);
+    const { name, date, location, description, title } = req.body || {};
+    const finalName = name || title;
+
+    if (!finalName || !date || !location || !description) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const parsedDate = new Date(date);
+    if (Number.isNaN(parsedDate.getTime())) {
+      return res.status(400).json({ message: "Invalid date" });
+    }
+
+    const event = await Event.create({
+      name: String(finalName).trim(),
+      date: parsedDate,
+      location: String(location).trim(),
+      description: String(description).trim(),
+    });
+
+    res.status(201).json({ message: "Event created", event });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

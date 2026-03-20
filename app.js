@@ -1,4 +1,6 @@
 const eventRoutes = require("./routes/eventRoutes");
+const authRoutes = require("./routes/authRoutes");
+const protectedRoutes = require("./routes/protectedRoutes");
 
 const express = require("express");
 const cors = require("cors");
@@ -8,6 +10,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/events", eventRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api", protectedRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Event Booking System Backend API is running" });
@@ -20,7 +24,6 @@ app.get("/api/test", (req, res) => {
   });
 });
 const bookingRoutes = require("./routes/bookingRoutes");
-// ...
-app.use("/api/bookings", bookingRoutes); 
+app.use("/api/bookings", bookingRoutes);
 
 module.exports = app;
