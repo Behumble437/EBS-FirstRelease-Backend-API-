@@ -17,9 +17,15 @@ const createBooking = async (req, res) => {
     const totalPrice = (pricePerTicket || 0) * ticketsBooked;
 
     const booking = await Booking.create({
-      event: eventId,
+
+      user:req.user.userId,
+    
+      event:eventId,
+    
       ticketsBooked,
+    
       totalPrice
+    
     });
 
     res.status(201).json({ message: "Booking created", booking });

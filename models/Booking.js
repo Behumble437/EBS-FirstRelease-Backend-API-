@@ -24,7 +24,11 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     enum: ["paid", "unpaid", "refunded"],
     default: "unpaid"
-  }
+  },
+  user:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User"
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Booking", bookingSchema);
