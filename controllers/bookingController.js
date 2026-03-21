@@ -23,6 +23,8 @@ const createBooking = async (req, res) => {
       event:eventId,
     
       ticketsBooked,
+
+      pricePerTicket,
     
       totalPrice
     
@@ -65,7 +67,14 @@ const updateBooking = async (req, res) => {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    if (req.body.ticketsBooked) booking.ticketsBooked = req.body.ticketsBooked;
+    if(req.body.ticketsBooked){
+
+      booking.ticketsBooked=req.body.ticketsBooked;
+      booking.totalPrice=
+      booking.ticketsBooked *
+      booking.pricePerTicket;
+      
+      }
     if (req.body.status) booking.status = req.body.status;
     if (req.body.paymentStatus) booking.paymentStatus = req.body.paymentStatus;
     if(booking.user.toString()!=req.user.userId){
