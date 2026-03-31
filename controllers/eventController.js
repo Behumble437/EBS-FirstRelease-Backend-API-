@@ -57,10 +57,11 @@ exports.createEvent = async (req, res) => {
     }
 
     const event = await Event.create({
-      name: String(finalName).trim(),
+      title: String(finalName).trim(),
       date: parsedDate,
       location: String(location).trim(),
       description: String(description).trim(),
+      capacity: req.body.capacity || 0,
     });
 
     res.status(201).json({

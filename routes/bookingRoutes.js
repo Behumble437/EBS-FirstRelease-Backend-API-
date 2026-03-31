@@ -1,4 +1,3 @@
-const authMiddleware = require("../middleware/authMiddleware");
 const express = require("express");
 const router = express.Router();
 const {
@@ -8,25 +7,12 @@ const {
   updateBooking,
   deleteBooking
 } = require("../controllers/bookingController");
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.post("/",
-authMiddleware,
-createBooking);
-
-router.get("/",
-authMiddleware,
-getAllBookings);
-
-router.get("/:id",
-authMiddleware,
-getBookingById);
-
-router.put("/:id",
-authMiddleware,
-updateBooking);
-
-router.delete("/:id",
-authMiddleware,
-deleteBooking);
+router.get("/", authMiddleware, getAllBookings);
+router.get("/:id", authMiddleware, getBookingById);
+router.post("/", authMiddleware, createBooking);
+router.put("/:id", authMiddleware, updateBooking);
+router.delete("/:id", authMiddleware, deleteBooking);
 
 module.exports = router;
