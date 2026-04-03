@@ -18,7 +18,12 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    capacity: { type: Number, required: false, default: 0 }
+    capacity: { type: Number, required: false, default: 0 },
+    pricePerTicket: {
+      type: Number,
+      required: true,
+      min: 0,
+    }
   },
   {
     timestamps: true
