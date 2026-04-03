@@ -1,7 +1,5 @@
 const jwt = require("jsonwebtoken");
-
 const User = require("../models/User");
-
 const { JWT_SECRET, JWT_EXPIRES_IN } = require("../helpers/jwtConfig");
 
 function formatUser(userDoc) {
@@ -25,15 +23,9 @@ async function register(req, res) {
   try {
     const { name, email, password, role } = req.body || {};
 
-    const missing = getMissingFields({ name, email, password }, [
-      "name",
-      "email",
-      "password",
-    ]);
+    const missing = getMissingFields({ name, email, password }, ["name", "email", "password"]);
     if (missing.length > 0) {
-      return res
-        .status(400)
-        .json({ message: `Missing required fields: ${missing.join(", ")}` });
+      return res.status(400).json({ message: `Missing required fields: ${missing.join(", ")}` });
     }
 
     const normalizedEmail = String(email).toLowerCase().trim();
@@ -68,9 +60,7 @@ async function login(req, res) {
 
     const missing = getMissingFields({ email, password }, ["email", "password"]);
     if (missing.length > 0) {
-      return res.status(400).json({
-        message: `Missing required fields: ${missing.join(", ")}`,
-      });
+      return res.status(400).json({ message: `Missing required fields: ${missing.join(", ")}` });
     }
 
     const normalizedEmail = String(email).toLowerCase().trim();
@@ -97,12 +87,8 @@ async function login(req, res) {
       token,
     });
   } catch (err) {
-    if (err && err.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Invalid or expired token" });
-    }
     return res.status(500).json({ message: "Server error" });
   }
 }
 
 module.exports = { register, login };
-
